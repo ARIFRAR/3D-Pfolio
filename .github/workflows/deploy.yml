@@ -1,0 +1,36 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # Atur sesuai dengan nama branch yang kamu gunakan untuk production, misalnya `main` atau `master`
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout kode dari repo
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Setup Node.js (gunakan versi yang sesuai dengan proyekmu)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16" # Ganti dengan versi Node.js yang sesuai
+
+      # Install dependensi
+      - name: Install dependencies
+        run: npm install
+
+      # Build aplikasi menggunakan Vite
+      - name: Build project
+        run: npm run build
+
+      # Deploy ke GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist # Pastikan ini sesuai dengan direktori output build-mu
